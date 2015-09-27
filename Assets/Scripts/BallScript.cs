@@ -10,10 +10,12 @@ public class BallScript : MonoBehaviour {
     // GameObject
     public GameObject playerObject;
 
+    public AudioClip hitSound;
+
 	// Use this for initialization
 	void Start () {
         // create the force
-        ballInitialForce = new Vector2(1000.0f, 4000.0f);
+        ballInitialForce = new Vector2(2000.0f, 4000.0f);
 
         // set to inactive
         ballIsActive = false;
@@ -60,4 +62,12 @@ public class BallScript : MonoBehaviour {
             playerObject.SendMessage("TakeLife");
         }
 	}
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (ballIsActive)
+        {
+            GetComponent<AudioSource>().PlayOneShot(hitSound);
+        }
+    }
 }

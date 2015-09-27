@@ -4,12 +4,16 @@ using System.Collections;
 public class Player : MonoBehaviour {
     public float playerVelocity;
     private Vector3 playerPosition;
+    public float boundary;
 
     private int playerLives;
     private int playerPoints;
+
+    public AudioClip pointSound;
+    public AudioClip lifeSound;
     // Use this for initialization
 	void Start () {
-        playerPosition = gameObject.transform.position;
+        playerPosition = gameObject.transform.localPosition;
 	    playerLives = 3;
 	    playerPoints = 0;
 	}
@@ -19,32 +23,57 @@ public class Player : MonoBehaviour {
     {
         //horizontal movement
         playerPosition.x += Input.GetAxis("Horizontal")*playerVelocity;
-        if (playerPosition.x > 110 && playerPosition.x < 615)
-        {
-            
-        }
-        else if (playerPosition.x < 110)
-        {
-            playerPosition.x = 110;
-        }
-        else if (playerPosition.x > 615)
-        {
-            playerPosition.x = 615;
-        }
-        transform.position = playerPosition;
 
-        
-
-        //leave the game 
-        if (Input.GetKeyDown(KeyCode.Q))
+        //leave the game
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
+
+        transform.localPosition =playerPosition;
+
+        // boundaries
+        if (playerPosition.x < -boundary)
+        {
+            transform.localPosition = new Vector3(-boundary, playerPosition.y, playerPosition.z);
+        }
+        if (playerPosition.x > boundary)
+        {
+            transform.localPosition = new Vector3(boundary, playerPosition.y, playerPosition.z);
+        }
+
+        //check game state
+        WinLose();
     }
+
+    private void WinLose()
+    {
+        //restart the game
+        if (playerLives == 0)
+        {
+            Application.LoadLevel("first");
+        }
+
+        //blocks destroyed
+        if(GameObject.FindGameObjectsWithTag("Block").Length==0)
+        {
+            //Check the current level
+            if (Application.loadedLevelName == "first")
+            {
+                Application.LoadLevel("second");
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
+    }
+   
 
     public void addPoints(int points)
     {
         playerPoints += points;
+        GetComponent<AudioSource>().PlayOneShot(pointSound);
     }
 
     private void OnGUI()
@@ -55,5 +84,6 @@ public class Player : MonoBehaviour {
     public void TakeLife()
     {
         playerLives--;
+        GetComponent<AudioSource>().PlayOneShot(lifeSound);
     }
 }
