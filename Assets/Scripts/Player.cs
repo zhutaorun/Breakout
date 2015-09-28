@@ -6,23 +6,30 @@ public class Player : MonoBehaviour {
     private Vector3 playerPosition;
     public float boundary;
 
-    private int playerLives;
-    private int playerPoints;
+    //private int playerLives;
+    //private int playerPoints;
 
     public AudioClip pointSound;
     public AudioClip lifeSound;
     // Use this for initialization
 	void Start() {
         playerPosition = gameObject.transform.localPosition;
-	    playerLives = 3;
-	    playerPoints = 0;
+        //playerLives = 3;
+        //playerPoints = 0;
 	}
 	
 	// Update is called once per frame
     private void Update()
     {
-        //horizontal movement
-        playerPosition.x += Input.GetAxis("Horizontal")*playerVelocity;
+		//touch input
+		if (Input.touchCount > 0) {
+			playerPosition.x = Input.touches [0].position.x >= Screen.width / 2 ? 1f : -1f;
+		} 
+		else //keyboard input
+		{
+			//horizontal movement
+			playerPosition.x += Input.GetAxis("Horizontal")*playerVelocity;
+		}
 
         //leave the game
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -43,10 +50,10 @@ public class Player : MonoBehaviour {
         }
 
         //check game state
-        WinLose();
+        //WinLose();
     }
 
-    private void WinLose()
+    /*private void WinLose()
     {
         //restart the game
         if (playerLives == 0)
@@ -67,9 +74,9 @@ public class Player : MonoBehaviour {
                 Application.Quit();
             }
         }
-    }
+    }*/
    
-
+/*
     public void AddPoints(int points)
     {
         playerPoints += points;
@@ -78,12 +85,12 @@ public class Player : MonoBehaviour {
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(5.0f,3.0f,200.0f,200.0f),"lives:"+playerLives +"Score:" +playerPoints);
+        GUI.Label(new Rect(5.0f,3.0f,200.0f,200.0f),"lives:"+playerLives+"Score:"+playerPoints);
     }
 
     public void TakeLife()
     {
         playerLives--;
         GetComponent<AudioSource>().PlayOneShot(lifeSound);
-    }
+    }*/
 }

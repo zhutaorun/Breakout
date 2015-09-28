@@ -26,13 +26,19 @@ public class BlockScript : MonoBehaviour
             if (numberOfHits == hitsTokill)
             {
                 //get reference of player object
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                //GameObject player = GameObject.FindGameObjectWithTag("Player");
 
                 //send message 
-                player.SendMessage("AddPoints", points);
+                //player.SendMessage("AddPoints", points);
 
                 //destroy the object
-                Destroy(this.gameObject);
+                //Destroy(this.gameObject);
+
+
+				//set it display
+				gameObject.SetActive(false);
+				GameManager.score += points;
+				GameManager.blockCount --;
             }
         }
     }

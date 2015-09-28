@@ -12,6 +12,8 @@ public class BallScript : MonoBehaviour {
 
     public AudioClip hitSound;
 
+	public GameManager gameManager;
+
 	// Use this for initialization
 	void Start() {
         // create the force
@@ -21,48 +23,30 @@ public class BallScript : MonoBehaviour {
         ballIsActive = false;
 
         // ball position
-        ballPosition = transform.position;
-
+        ballPosition = new Vector3(playerObject.transform.position.x,playerObject.transform.position.y+25.0f,playerObject.transform.position.z);
+		 
 	    ballRigidbody2D = GetComponent<Rigidbody2D>();
+
+		ballRigidbody2D.velocity = Vector2.zero;
 	}
 	
 	// Update is called once per frame
 	void Update() {
-        // check for user input
-        if (Input.GetButtonDown("Jump") == true)
-        {
-            // check if is the first play
-            if (!ballIsActive){
-                // add a force
-                ballRigidbody2D.isKinematic = false;
-                ballRigidbody2D.AddForce(ballInitialForce);
-                // set ball active
-                ballIsActive = !ballIsActive;
-            }
-        }
+        
 
         if (!ballIsActive && playerObject != null)
-        {
+       	{
             // get and use the player position
-            ballPosition.x = playerObject.transform.position.x;
+    	   ballPosition.x = playerObject.transform.position.x;
 
             // apply player X position to the ball
-            transform.position = ballPosition;
+           transform.position = ballPosition;
         }
 
-        //Check if ball falls
-        if (ballIsActive && transform.position.y < -6)
-        {
-            ballIsActive = !ballIsActive;
-            ballPosition.x = playerObject.transform.position.x;
-            ballPosition.y = 65f;
-            transform.position = ballPosition;
-
-            ballRigidbody2D.isKinematic = true;
-            playerObject.SendMessage("TakeLife");
-        }
+       
 	}
 
+	//when ball hit block,play sound
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (ballIsActive)
@@ -70,4 +54,34 @@ public class BallScript : MonoBehaviour {
             GetComponent<AudioSource>().PlayOneShot(hitSound);
         }
     }
+
+	public void StartBall()
+	{
+		// check if is the first play
+		if (!ballIsActive){
+			// add a force
+			ballRigidbody2D.isKinematic = false;
+			ballRigidbody2D.AddForce(ballInitialForce);
+			// set ball active
+			ballIsActive = !ballIsActive;
+		}
+	}
+
+	public void StopBall()
+	{
+		//Check if ball falls
+		if (ballIsActive)
+		{
+			ballIsActive = !ballIsActive;
+			//ballPosition.x = playerObject.transform.position.x;
+			//ballPosition.y = playerObject.transform.position.y+25.0f;
+			transform.position = ballPosition;
+			
+			ballRigidbody2D.isKinematic = true;
+			//playerObject.SendMessage("TakeLife");
+
+			gameManager.DecreaseLives();
+		}
+	}
+
 }
