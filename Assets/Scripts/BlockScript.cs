@@ -8,13 +8,13 @@ public class BlockScript : MonoBehaviour
     private int numberOfHits;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 	    numberOfHits = 0;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 	  
 	}
 
@@ -29,7 +29,7 @@ public class BlockScript : MonoBehaviour
                 GameObject player = GameObject.FindGameObjectWithTag("Player");
 
                 //send message 
-                player.SendMessage("addPoints", points);
+                player.SendMessage("AddPoints", points);
 
                 //destroy the object
                 Destroy(this.gameObject);

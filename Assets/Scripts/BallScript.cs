@@ -13,7 +13,7 @@ public class BallScript : MonoBehaviour {
     public AudioClip hitSound;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
         // create the force
         ballInitialForce = new Vector2(2000.0f, 4000.0f);
 
@@ -27,7 +27,7 @@ public class BallScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
         // check for user input
         if (Input.GetButtonDown("Jump") == true)
         {

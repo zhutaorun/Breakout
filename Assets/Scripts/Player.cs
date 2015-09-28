@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     public AudioClip pointSound;
     public AudioClip lifeSound;
     // Use this for initialization
-	void Start () {
+	void Start() {
         playerPosition = gameObject.transform.localPosition;
 	    playerLives = 3;
 	    playerPoints = 0;
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
     }
    
 
-    public void addPoints(int points)
+    public void AddPoints(int points)
     {
         playerPoints += points;
         GetComponent<AudioSource>().PlayOneShot(pointSound);
